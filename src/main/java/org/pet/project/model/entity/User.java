@@ -10,9 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
 
     @Id

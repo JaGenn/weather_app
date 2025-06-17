@@ -12,9 +12,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "locations", uniqueConstraints = {@UniqueConstraint(columnNames = {"latitude", "longitude"})})
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Location {
 
     @Id
