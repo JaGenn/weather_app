@@ -42,4 +42,15 @@ public class WebConfig implements WebMvcConfigurer {
         viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
+
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // Настройка статических ресурсов
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("/static/css/");
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("/static/js/");
+
+    }
 }
