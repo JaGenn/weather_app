@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск локации</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main-page.css}"/>
+</head>
+
+<body>
+<div class="d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header(login=${login}, isAuthenticated=${isAuthenticated})}"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5 flex-grow-1">
+
+        <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success text-center" th:text="${success}"></div>
+
+        <!-- Заголовок -->
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- Карточка локации -->
+                <div th:if="${locationCard != null}" class="card location-card shadow rounded-4 border-0">
+                    <div class="card-body p-4">
+
+                        <!-- Название и страна -->
+                        <div class="text-center mb-4">
+                            <p class="text-uppercase text-muted small mb-1">Город</p>
+                            <h3 class="h4 mb-3" th:text="${locationCard.name}">Название города</h3>
+
+                            <p class="text-uppercase text-muted small mb-1">Страна</p>
+                            <p class="mb-0 fs-5 fw-semibold" th:text="${locationCard.country}">Страна</p>
+                        </div>
+
+                        <!-- Кнопка "Отслеживать" -->
+                        <form th:action="@{/track}" th:object="${locationCard}" method="post" class="text-center mt-3">
+                            <input type="hidden" th:field="*{name}" />
+                            <input type="hidden" th:field="*{country}" />
+                            <input type="hidden" th:field="*{coord.lat}" />
+                            <input type="hidden" th:field="*{coord.lon}" />
+                            <button type="submit" class="btn btn-outline-primary px-4 py-2 rounded-pill">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                     fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                                Отслеживать локацию
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- Если локация не найдена -->
+<!--                <div th:if="${locationCard == null}" class="alert alert-info text-center mt-4">-->
+<!--                    Локация не найдена. Попробуйте другой запрос.-->
+<!--                </div>-->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 Погода</span>
+        </div>
+    </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

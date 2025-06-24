@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сервис погоды</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/fragments/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main-page.css}"/>
+</head>
+
+<body>
+<div class="d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header(login=${login}, isAuthenticated=${isAuthenticated})}"></div>
+
+    <!-- Main Content -->
+    <main class="container my-5 flex-grow-1">
+        <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+
+        <!-- Locations List -->
+        <div class="row" th:if="${isAuthenticated}">
+            <div class="col-12">
+                <h2 class="h4 mb-4">Мои локации</h2>
+
+                <div th:if="${locations != null and !locations.empty}" class="row g-4">
+
+                    <div th:each="location : ${locations}" class="col-md-6 col-lg-4">
+                        <div class="card shadow-sm rounded-4 location-card h-100 border-0">
+
+                            <div class="card-body p-4 d-flex flex-column justify-content-between">
+
+                                <!-- Название и страна -->
+                                <div class="mb-3">
+                                    <h5 class="card-title mb-1" th:text="${location.name}">Название города</h5>
+                                    <p class="text-muted mb-2" th:text="${location.country}">Страна</p>
+                                </div>
+
+                                <!-- Погода -->
+                                <div class="weather-info mb-3">
+                                    <p class="mb-1">
+                                        Температура: <strong th:text="${location.temp != null ? location.temp + '°C' : 'Нет данных'}">24°C</strong>
+                                    </p>
+                                    <p class="mb-1 text-muted small" th:if="${location.feelsLike != null}">
+                                        Ощущается как: <span th:text="${location.feelsLike + '°C'}">22°C</span>
+                                    </p>
+                                </div>
+
+                                <!-- Время рассвета и заката -->
+                                <div class="d-flex justify-content-between text-muted small mb-3">
+                                    <div>
+                                        <span class="me-1">🌅</span>
+                                        <span th:text="${location.sunrise}">06:00</span>
+                                    </div>
+                                    <div>
+                                        <span class="me-1">🌇</span>
+                                        <span th:text="${location.sunset}">20:45</span>
+                                    </div>
+                                </div>
+
+                                <!-- Кнопка удаления -->
+                                <form th:action="@{/delete}" method="post" class="text-end mt-auto">
+                                    <!-- Передача координат -->
+                                    <input type="hidden" name="lat" th:value="${location.coord.lat}" />
+                                    <input type="hidden" name="lon" th:value="${location.coord.lon}" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-trash me-1" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3
+                            .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd"
+                                                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0
+                                  0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1
+                                  1h3.5a1 1 0 0 1 1 1v1zM4.118 4
+                                  4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0
+                                  0 1-1V4.059L11.882 4H4.118zM2.5
+                                  3V2h11v1h-11z"/>
+                                        </svg>
+                                        Удалить
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div th:if="${locations == null or locations.empty}" class="alert alert-info">
+                    У вас пока нет сохранённых локаций. Начните с поиска города выше.
+                </div>
+            </div>
+        </div>
+
+        <!-- Guest Message -->
+        <div th:unless="${isAuthenticated}" class="text-center py-5">
+
+            <div class="card p-5 bg-light">
+                <h2 class="h4 mb-4">Добро пожаловать в Сервис погоды!</h2>
+                <p class="mb-4">Для просмотра и сохранения локаций, пожалуйста, войдите или зарегистрируйтесь.</p>
+                <div>
+                    <a th:href="@{/sign-in}" class="btn btn-primary me-2">Войти</a>
+                    <a th:href="@{/sign-up}" class="btn btn-outline-primary">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 Погода</span>
+        </div>
+    </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
