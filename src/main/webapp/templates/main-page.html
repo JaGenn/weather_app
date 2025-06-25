@@ -32,18 +32,30 @@
                             <div class="card-body p-4 d-flex flex-column justify-content-between">
 
                                 <!-- Название и страна -->
-                                <div class="mb-3">
-                                    <h5 class="card-title mb-1" th:text="${location.name}">Название города</h5>
-                                    <p class="text-muted mb-2" th:text="${location.country}">Страна</p>
+                                <div class="mb-3 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="card-title mb-1" th:text="${location.name}">Название города</h5>
+                                        <p class="text-muted mb-0" th:text="${location.country}">Страна</p>
+                                    </div>
+                                    <div>
+                                        <img th:if="${location.icon != null}"
+                                             th:src="'https://openweathermap.org/img/wn/' + ${location.icon} + '@2x.png'"
+                                             alt="Погода"
+                                             width="88" height="88">
+                                    </div>
                                 </div>
 
                                 <!-- Погода -->
                                 <div class="weather-info mb-3">
                                     <p class="mb-1">
-                                        Температура: <strong th:text="${location.temp != null ? location.temp + '°C' : 'Нет данных'}">24°C</strong>
+                                        Температура: <strong
+                                            th:text="${location.temp != null ? location.temp + '°C' : 'Нет данных'}">24°C</strong>
                                     </p>
                                     <p class="mb-1 text-muted small" th:if="${location.feelsLike != null}">
                                         Ощущается как: <span th:text="${location.feelsLike + '°C'}">22°C</span>
+                                    </p>
+                                    <p class="mb-1 text-muted small" th:if="${location.humidity != null}">
+                                        Влажность: <span th:text="${location.humidity + '%'}"></span>
                                     </p>
                                 </div>
 
@@ -62,8 +74,8 @@
                                 <!-- Кнопка удаления -->
                                 <form th:action="@{/delete}" method="post" class="text-end mt-auto">
                                     <!-- Передача координат -->
-                                    <input type="hidden" name="lat" th:value="${location.coord.lat}" />
-                                    <input type="hidden" name="lon" th:value="${location.coord.lon}" />
+                                    <input type="hidden" name="lat" th:value="${location.coord.lat}"/>
+                                    <input type="hidden" name="lon" th:value="${location.coord.lon}"/>
                                     <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="currentColor" class="bi bi-trash me-1" viewBox="0 0 16 16">

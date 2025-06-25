@@ -12,8 +12,10 @@ public class UserWeatherCardDto {
 
     private String name;
     private String country;
+    private String icon;
     private Integer temp;
     private Integer feelsLike;
+    private Integer humidity;
     private String sunrise;
     private String sunset;
     private Coord coord;

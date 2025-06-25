@@ -1,9 +1,7 @@
 package org.pet.project.model.dto.api.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Data;
 
-import java.time.LocalDateTime;
+import lombok.Data;
 
 
 @Data
