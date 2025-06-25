@@ -1,19 +1,15 @@
-package org.pet.project;
+package org.pet.project.controller.authentication;
 
 
-import com.password4j.Hash;
 import com.password4j.Password;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.SessionDAO;
 import org.pet.project.dao.UserDAO;
-import org.pet.project.model.dto.AuthFormDto;
-import org.pet.project.model.dto.RegistrationFormDto;
+import org.pet.project.model.dto.authentication.AuthFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -52,18 +49,15 @@ public class AuthController {
             return "sign-in";
         }
 
-        User user = userDAO.fingByLogin(form.getLogin()).orElse(null);
-        if (user == null) {
-            model.addAttribute("error", "Пользователь с логином " + form.getLogin() + " не найден");
-            return "sign-in";
-        }
-        if (!Password.check(form.getPassword(), user.getPassword()).withBcrypt()) {
-            model.addAttribute("error", "Неправильный пароль для пользователя: " + form.getLogin());
+        Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
+
+        if (optionalUser.isEmpty() || !Password.check(form.getPassword(), optionalUser.get().getPassword()).withBcrypt()) {
+            model.addAttribute("error", "Неверный логин или пароль");
             return "sign-in";
         }
 
         log.info("Creating new session");
-        Session session = new Session(UUID.randomUUID(), user, LocalDateTime.now().plusHours(2));
+        Session session = new Session(UUID.randomUUID(), optionalUser.get(), LocalDateTime.now().plusHours(24));
         sessionDAO.save(session);
 
         log.info("Adding cookie with session: " + session.getId() + " to the response");
@@ -72,6 +66,12 @@ public class AuthController {
 
         log.info("Authentication is successful: redirecting to the main page");
         return "redirect:/";
+    }
+
+    @PostMapping("/sign-out")
+    public String signOut(Model model) {
+        model.addAttribute("isAuthenticated", false);
+        return "main-page";
     }
 
 }

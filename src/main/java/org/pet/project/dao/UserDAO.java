@@ -39,4 +39,13 @@ public class UserDAO {
             throw new DataBaseOperationException("There is no user with login " + login + " in database");
         }
     }
+
+    public void updateUser(User user) {
+
+        try {
+            sessionFactory.getCurrentSession().merge(user);
+        } catch (HibernateException e) {
+            throw new DataBaseOperationException("Update user data with login " + user.getLogin() + " was failed");
+        }
+    }
 }
