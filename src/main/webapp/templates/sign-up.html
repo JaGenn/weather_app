@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title >Регистрация</title>
+    <title th:text="${title}"></title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/sign-up.css}" />
@@ -22,8 +22,8 @@
                                 <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0v-1zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708l.707-.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708l-.708-.707zm1.734 3.374a2 2 0 1 1 3.296 2.198c.199.281.372.582.516.898a3 3 0 1 0-4.84-3.225c.352.011.696.055 1.028.129zm4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377zM14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
                             </svg>
                         </div>
-                        <h2 class="mb-3">Регистрация</h2>
-                        <p class="text-muted">Создайте новый аккаунт</p>
+                        <h2 class="mb-3" th:text="${title}"></h2>
+                        <p class="text-muted" th:text="${subtitle}"></p>
 
                         <!-- Сообщения об ошибках -->
                         <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
@@ -31,7 +31,7 @@
                     </div>
 
                     <!-- Форма регистрации -->
-                    <form th:action="@{/sign-up}" method="post" th:object="${registrationForm}" onsubmit="return validatePasswords()">
+                    <form th:action="@{${formAction}}" method="post" th:object="${registrationForm}" onsubmit="return validatePasswords()">
                         <div class="mb-3">
                             <label for="login" class="form-label">Логин</label>
                             <input type="text"
@@ -69,7 +69,7 @@
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
                         </div>
                         <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary btn-register">Зарегистрироваться</button>
+                            <button type="submit" class="btn btn-primary btn-register" th:text="${buttonMean}"></button>
                         </div>
                     </form>
                 </div>
