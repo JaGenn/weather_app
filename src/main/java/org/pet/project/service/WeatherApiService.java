@@ -47,6 +47,7 @@ public class WeatherApiService {
 
             LocationSearchCardDto locationSearchCardDto = convertToLocationDto(response);
 
+            log.info("Location {} was found by name and converted to DTO", locationName);
             return Optional.of(locationSearchCardDto);
 
         } catch (HttpClientErrorException e) {
@@ -78,10 +79,11 @@ public class WeatherApiService {
 
             Coord coord = new Coord(lon, lat);
 
+            log.info("Location {} was found by coordinates and converted to DTO", location.getName());
             return convertToWeatherDto(response, coord);
 
         } catch (RestClientException e) {
-            log.error("Error fetching weather for coordinates lat={}, lon={}: {}", lat, lon, e.getMessage());
+            log.error("Error fetching weather for coordinates lat={}, lon={}", lat, lon);
             throw new LocationNotFoundException("Failed to fetch weather data: " + e.getMessage());
         }
     }

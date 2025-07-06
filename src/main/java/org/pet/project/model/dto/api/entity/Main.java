@@ -10,4 +10,6 @@ public class Main {
 
     @JsonProperty("feels_like")
     private Integer feelsLike;
+
+    private Integer humidity;
 }

@@ -34,8 +34,10 @@ public class MappingUtil {
         return new UserWeatherCardDto(
                 apiResponse.getName(),
                 uncoddedCountryName,
+                apiResponse.getWeather().getFirst().getIcon(),
                 apiResponse.getMain().getTemp(),
                 apiResponse.getMain().getFeelsLike(),
+                apiResponse.getMain().getHumidity(),
                 uncoddedSunrise,
                 uncoddedSunset,
                 coord

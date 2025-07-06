@@ -34,6 +34,7 @@ public class RegisterController {
 
     @GetMapping("/sign-up")
     public String registrationForm(Model model) {
+        addPageDataToModel(model);
         model.addAttribute("registrationForm", new RegistrationFormDto());
         return "sign-up";
     }
@@ -42,6 +43,8 @@ public class RegisterController {
     @PostMapping("/sign-up")
     public String signUp(@Valid @ModelAttribute("registrationForm") RegistrationFormDto form, BindingResult result,
                          Model model, HttpServletResponse resp) {
+
+        addPageDataToModel(model);
 
         if (result.hasErrors()) {
             return "sign-up";
@@ -54,7 +57,7 @@ public class RegisterController {
         Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
 
         if (optionalUser.isPresent()) {
-            model.addAttribute("error", "Такой пользователь уже зарегистрирован");
+            model.addAttribute("error", "Такой пользователь уже зарегистрирован.");
             return "sign-up";
         }
 
@@ -74,5 +77,12 @@ public class RegisterController {
 
         log.info("Registration is successful: redirecting to the main page");
         return "redirect:/";
+    }
+
+    private void addPageDataToModel(Model model) {
+        model.addAttribute("formAction", "/sign-up");
+        model.addAttribute("title", "Регистрация");
+        model.addAttribute("subtitle", "Создайте новый аккаунт");
+        model.addAttribute("buttonMean","Зарегистрироваться");
     }
 }
