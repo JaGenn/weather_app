@@ -42,8 +42,8 @@
                         <form th:action="@{/track}" th:object="${locationCard}" method="post" class="text-center mt-3">
                             <input type="hidden" th:field="*{name}" />
                             <input type="hidden" th:field="*{country}" />
-                            <input type="hidden" th:field="*{coord.lat}" />
-                            <input type="hidden" th:field="*{coord.lon}" />
+                            <input type="hidden" th:field="*{coordinates.lat}" />
+                            <input type="hidden" th:field="*{coordinates.lon}" />
                             <button type="submit" class="btn btn-outline-primary px-4 py-2 rounded-pill">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                      fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">

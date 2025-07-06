@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.exception.CookieNotFoundException;
 import org.pet.project.model.dto.api.UserWeatherCardDto;
-import org.pet.project.model.dto.api.entity.Coord;
+import org.pet.project.model.dto.api.entity.Coordinates;
 import org.pet.project.model.entity.User;
 import org.pet.project.service.LocationService;
 import org.pet.project.service.UserSessionCheckService;
@@ -50,12 +50,12 @@ public class WeatherController {
     }
 
     @PostMapping("/delete")
-    public String deleteWeatherCard(@ModelAttribute Coord coord, HttpServletRequest req, Model model) {
+    public String deleteWeatherCard(@ModelAttribute Coordinates coordinates, HttpServletRequest req, Model model) {
 
         User user = sessionCheckService.getAuthenticatedUser(req, model)
                 .orElseThrow(() -> new CookieNotFoundException("User, which deletes location, is not found"));
 
-        locationService.deleteLocationByUser(user, coord.getLat(), coord.getLon());
+        locationService.deleteLocationByUser(user, coordinates.getLat(), coordinates.getLon());
 
         return "redirect:/";
     }

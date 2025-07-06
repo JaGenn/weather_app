@@ -63,8 +63,8 @@ public class LocationController {
                                 HttpServletRequest req, Model model) {
 
         String locationName = cardDto.getName();
-        BigDecimal lat = cardDto.getCoord().getLat();
-        BigDecimal lon = cardDto.getCoord().getLon();
+        BigDecimal lat = cardDto.getCoordinates().getLat();
+        BigDecimal lon = cardDto.getCoordinates().getLon();
 
         User user = userSessionCheckService.getAuthenticatedUser(req, model)
                 .orElseThrow(() -> new CookieNotFoundException("User, which requests location, is not found"));

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Coord {
+public class Coordinates {
 
     private BigDecimal lon;
     private BigDecimal lat;
