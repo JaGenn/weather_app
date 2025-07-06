@@ -3,7 +3,6 @@ package org.pet.project.util;
 import org.pet.project.model.dto.api.LocationSearchCardDto;
 import org.pet.project.model.dto.api.UserWeatherCardDto;
 import org.pet.project.model.dto.api.WeatherApiResponse;
-import org.pet.project.model.dto.api.entity.Coord;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -20,12 +19,12 @@ public class MappingUtil {
         return new LocationSearchCardDto(
                 apiResponse.getName(),
                 uncoddedCountryName,
-                apiResponse.getCoord()
+                apiResponse.getCoordinates()
         );
     }
 
 
-    public static UserWeatherCardDto convertToWeatherDto(WeatherApiResponse apiResponse, Coord coord) {
+    public static UserWeatherCardDto convertToWeatherDto(WeatherApiResponse apiResponse) {
 
         String uncoddedCountryName = convertCountryCodeToString(apiResponse.getSys().getCountry());
         String uncoddedSunrise = convertUnixToTime(apiResponse.getSys().getSunrise(), apiResponse.getTimezone());
@@ -39,8 +38,7 @@ public class MappingUtil {
                 apiResponse.getMain().getFeelsLike(),
                 apiResponse.getMain().getHumidity(),
                 uncoddedSunrise,
-                uncoddedSunset,
-                coord
+                uncoddedSunset
         );
     }
 

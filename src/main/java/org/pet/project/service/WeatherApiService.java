@@ -1,14 +1,14 @@
 package org.pet.project.service;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.exception.LocationNotFoundException;
 import org.pet.project.model.dto.api.WeatherApiResponse;
 import org.pet.project.model.dto.api.LocationSearchCardDto;
 import org.pet.project.model.dto.api.UserWeatherCardDto;
-import org.pet.project.model.dto.api.entity.Coord;
+import org.pet.project.model.dto.api.entity.Coordinates;
 import org.pet.project.model.entity.Location;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
@@ -24,14 +24,14 @@ import static org.pet.project.util.MappingUtil.*;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @PropertySource("classpath:application.properties")
 public class WeatherApiService {
 
     @Value("${weather.api.key}")
     private String API_KEY;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public Optional<LocationSearchCardDto> findLocationByName(String locationName) {
 
@@ -77,10 +77,14 @@ public class WeatherApiService {
                 throw new LocationNotFoundException("Weather API returned null response for coordinates: lat=" + lat + ", lon=" + lon);
             }
 
-            Coord coord = new Coord(lon, lat);
+            UserWeatherCardDto weatherCardDto = convertToWeatherDto(response);
+
+            Coordinates coordinates = new Coordinates(lon, lat);
+
+            weatherCardDto.setCoordinates(coordinates);
 
             log.info("Location {} was found by coordinates and converted to DTO", location.getName());
-            return convertToWeatherDto(response, coord);
+            return weatherCardDto;
 
         } catch (RestClientException e) {
             log.error("Error fetching weather for coordinates lat={}, lon={}", lat, lon);
