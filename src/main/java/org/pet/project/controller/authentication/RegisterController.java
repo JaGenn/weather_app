@@ -1,4 +1,4 @@
-package org.pet.project;
+package org.pet.project.controller.authentication;
 
 import com.password4j.Hash;
 import com.password4j.Password;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.SessionDAO;
 import org.pet.project.dao.UserDAO;
-import org.pet.project.model.dto.RegistrationFormDto;
+import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -50,14 +51,21 @@ public class RegisterController {
             return "sign-up";
         }
 
-        Hash hash = Password.hash(form.getPassword()).withBcrypt();
+        Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
+
+        if (optionalUser.isPresent()) {
+            model.addAttribute("error", "Такой пользователь уже зарегистрирован");
+            return "sign-up";
+        }
+
+        Hash password = Password.hash(form.getPassword()).withBcrypt();
 
         log.info("Saving new user to the database");
-        User user = new User(form.getLogin(), hash.getResult());
+        User user = new User(form.getLogin(), password.getResult());
         userDAO.save(user);
 
         log.info("Creating new session");
-        Session session = new Session(UUID.randomUUID(), user, LocalDateTime.now().plusHours(2));
+        Session session = new Session(UUID.randomUUID(), user, LocalDateTime.now().plusHours(24));
         sessionDAO.save(session);
 
         log.info("Adding cookie with session: " + session.getId() + " to the response");
