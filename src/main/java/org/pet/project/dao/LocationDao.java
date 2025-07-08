@@ -1,11 +1,9 @@
 package org.pet.project.dao;
 
 import jakarta.persistence.NoResultException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.pet.project.exception.DataBaseOperationException;
 import org.pet.project.model.entity.Location;
 import org.pet.project.model.entity.User;
@@ -18,19 +16,8 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @Transactional
-@RequiredArgsConstructor
-public class LocationDAO {
+public class LocationDao extends CrudDao<Location> {
 
-    private final SessionFactory sessionFactory;
-
-    public void save(Location location) {
-
-        try {
-            sessionFactory.getCurrentSession().persist(location);
-        } catch (HibernateException e) {
-            throw new DataBaseOperationException("Failed to save location " + location.getName() + " to database");
-        }
-    }
 
     public Optional<Location> findByUserAndLatitudeAndLongitude(User user, BigDecimal lat, BigDecimal lon) {
         Session session = sessionFactory.getCurrentSession();
