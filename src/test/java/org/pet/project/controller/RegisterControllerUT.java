@@ -7,11 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pet.project.dao.SessionDAO;
-import org.pet.project.dao.UserDAO;
-import org.pet.project.model.dto.RegistrationFormDto;
+import org.pet.project.controller.authentication.RegisterController;
+import org.pet.project.dao.SessionDao;
+import org.pet.project.dao.UserDao;
+import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
+import org.pet.project.service.UserSessionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -32,10 +34,13 @@ public class RegisterControllerUT {
     private HttpServletResponse resp;
 
     @Mock
-    private SessionDAO sessionDAO;
+    private SessionDao sessionDAO;
 
     @Mock
-    private UserDAO userDAO;
+    private UserDao userDAO;
+
+    @Mock
+    private UserSessionService userSessionService;
 
     @InjectMocks
     private RegisterController controller;
@@ -82,9 +87,8 @@ public class RegisterControllerUT {
 
         String answerView = controller.signUp(formDto, bindingResult, model, resp);
 
-        verify(userDAO).save(any(User.class));
-        verify(sessionDAO).save(any(Session.class));
-        verify(resp).addCookie(any(Cookie.class));
+        verify(userSessionService).registerUser(formDto, resp);
+
         assertEquals("redirect:/", answerView);
 
     }

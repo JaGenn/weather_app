@@ -8,10 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.pet.project.config.DataBaseConfig;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.UserDao;
 import org.pet.project.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,7 +22,6 @@ import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matcher.*;
 
 
 @ExtendWith(SpringExtension.class)
@@ -35,7 +33,7 @@ public class AuthControllerIT {
     private WebApplicationContext context;
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     private MockMvc mockMvc;
 
