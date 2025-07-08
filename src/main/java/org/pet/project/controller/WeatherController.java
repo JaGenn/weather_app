@@ -3,11 +3,11 @@ package org.pet.project.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.pet.project.dao.LocationDao;
 import org.pet.project.exception.CookieNotFoundException;
 import org.pet.project.model.dto.api.UserWeatherCardDto;
 import org.pet.project.model.dto.api.entity.Coordinates;
 import org.pet.project.model.entity.User;
-import org.pet.project.service.LocationService;
 import org.pet.project.service.WeatherApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ import java.util.*;
 public class WeatherController {
 
     private final WeatherApiService weatherApiService;
-    private final LocationService locationService;
+    private final LocationDao locationDao;
 
     @GetMapping("/")
     public String getWeather(HttpServletRequest req, Model model) {
@@ -49,14 +49,15 @@ public class WeatherController {
     }
 
     @PostMapping("/delete")
-    public String deleteWeatherCard(@ModelAttribute Coordinates coordinates, HttpServletRequest req, Model model) {
+    public String deleteWeatherCard(@ModelAttribute Coordinates coordinates, HttpServletRequest req) {
 
         User user = (User) req.getAttribute("user");
         if (user == null) {
             throw new CookieNotFoundException("User, which deletes location, is not found");
         }
 
-        locationService.deleteLocationByUser(user, coordinates.getLat(), coordinates.getLon());
+        locationDao.deleteByUserAndLatitudeAndLongitude(user, coordinates.getLat(), coordinates.getLon());
+        log.info("Deleted location for user {}", user.getLogin());
 
         return "redirect:/";
     }
