@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.UserDao;
 import org.pet.project.model.dto.authentication.AuthFormDto;
 import org.pet.project.model.entity.User;
 import org.pet.project.service.UserSessionService;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserDAO userDAO;
+    private final UserDao userDao;
     private final UserSessionService userSessionService;
 
 
@@ -46,7 +46,7 @@ public class AuthController {
             return "sign-in";
         }
 
-        Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
+        Optional<User> optionalUser = userDao.fingByLogin(form.getLogin());
 
         if (optionalUser.isEmpty() || !Password.check(form.getPassword(), optionalUser.get().getPassword()).withBcrypt()) {
             model.addAttribute("error", "Неверный логин или пароль");

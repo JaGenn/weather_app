@@ -4,7 +4,7 @@ package org.pet.project.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pet.project.dao.LocationDAO;
+import org.pet.project.dao.LocationDao;
 import org.pet.project.exception.CookieNotFoundException;
 import org.pet.project.model.dto.api.LocationSearchCardDto;
 import org.pet.project.model.entity.Location;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class LocationController {
 
     private final WeatherApiService weatherApiService;
-    private final LocationDAO locationDAO;
+    private final LocationDao locationDao;
     private final LocationService locationService;
 
     @GetMapping("/search")
@@ -67,7 +67,7 @@ public class LocationController {
         User user = (User) req.getAttribute("user");
 
         if (user == null) {
-            throw  new CookieNotFoundException("User, which requests location, is not found");
+            throw new CookieNotFoundException("User, which requests location, is not found");
         }
 
         if (locationService.isLocationAlreadyTrackedByUser(user, lat, lon)) {
@@ -78,7 +78,7 @@ public class LocationController {
         }
 
         Location location = new Location(locationName, user, lat, lon);
-        locationDAO.save(location);
+        locationDao.save(location);
 
         user.getLocations().add(location);
 
