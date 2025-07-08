@@ -34,7 +34,7 @@ public class PasswordRecoverController {
     }
 
     @PostMapping("/forgot-password")
-    public String signUp(@Valid @ModelAttribute("registrationForm") RegistrationFormDto form,
+    public String recoverPassword(@Valid @ModelAttribute("registrationForm") RegistrationFormDto form,
                          BindingResult result, Model model,
                          RedirectAttributes redirectAttributes) {
 
@@ -70,7 +70,7 @@ public class PasswordRecoverController {
 
 
         log.info("Password recover is successful: redirecting to the auth page");
-        redirectAttributes.addFlashAttribute("success", "Ваш пароль был успешно обновлен");
+        redirectAttributes.addFlashAttribute("success", "Ваш пароль был успешно обновлен.");
         return "redirect:/sign-in";
     }
 
