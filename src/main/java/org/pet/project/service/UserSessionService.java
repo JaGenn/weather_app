@@ -6,8 +6,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pet.project.dao.SessionDAO;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.SessionDao;
+import org.pet.project.dao.UserDao;
+import org.pet.project.exception.UniqueConstraintViolationException;
+import org.pet.project.exception.UserExistsException;
 import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
@@ -22,8 +24,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserSessionService {
 
-    private final SessionDAO sessionDAO;
-    private final UserDAO userDAO;
+    private final SessionDao sessionDao;
+    private final UserDao userDao;
 
     public void registerUser(RegistrationFormDto form, HttpServletResponse resp) {
 
@@ -31,11 +33,16 @@ public class UserSessionService {
 
         log.info("Saving new user to the database");
         User user = new User(form.getLogin(), password.getResult());
-        userDAO.save(user);
+
+        try {
+            userDao.save(user);
+        } catch (UniqueConstraintViolationException e) {
+            throw new UserExistsException(e.getMessage());
+        }
 
         log.info("Creating new session");
         Session session = new Session(user, LocalDateTime.now().plusHours(24));
-        sessionDAO.save(session);
+        sessionDao.save(session);
 
         log.info("Adding cookie with session: " + session.getId() + " to the response");
         Cookie cookie = new Cookie("sessionId", session.getId().toString());
@@ -46,7 +53,7 @@ public class UserSessionService {
 
         log.info("Creating new session");
         Session session = new Session(user, LocalDateTime.now().plusHours(24));
-        sessionDAO.save(session);
+        sessionDao.save(session);
 
         log.info("Adding cookie with session: " + session.getId() + " to the response");
         Cookie cookie = new Cookie("sessionId", session.getId().toString());

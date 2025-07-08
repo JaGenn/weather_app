@@ -5,7 +5,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.UserDao;
+import org.pet.project.exception.UserExistsException;
 import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.User;
 import org.pet.project.service.UserSessionService;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegisterController {
 
-    private final UserDAO userDAO;
+    private final UserDao userDao;
     private final UserSessionService userSessionService;
 
 
@@ -50,14 +51,12 @@ public class RegisterController {
             return "sign-up";
         }
 
-        Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
-
-        if (optionalUser.isPresent()) {
+        try {
+            userSessionService.registerUser(form, resp);
+        } catch (UserExistsException e) {
             model.addAttribute("error", "Такой пользователь уже зарегистрирован.");
             return "sign-up";
         }
-
-        userSessionService.registerUser(form, resp);
 
         log.info("Registration is successful: redirecting to the main page");
         return "redirect:/";

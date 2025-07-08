@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.LocationDao;
 import org.pet.project.exception.CookieNotFoundException;
+import org.pet.project.exception.UniqueConstraintViolationException;
 import org.pet.project.model.dto.api.LocationSearchCardDto;
 import org.pet.project.model.entity.Location;
 import org.pet.project.model.entity.User;
-import org.pet.project.service.LocationService;
 import org.pet.project.service.WeatherApiService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,6 @@ public class LocationController {
 
     private final WeatherApiService weatherApiService;
     private final LocationDao locationDao;
-    private final LocationService locationService;
 
     @GetMapping("/search")
     public String searchLocation(@RequestParam("location") String locationName, HttpServletRequest req, Model model) {
@@ -70,27 +69,25 @@ public class LocationController {
             throw new CookieNotFoundException("User, which requests location, is not found");
         }
 
-        if (locationService.isLocationAlreadyTrackedByUser(user, lat, lon)) {
+        Location location = new Location(locationName, user, lat, lon);
+
+        try {
+            locationDao.save(location);
+        } catch (UniqueConstraintViolationException e) {
             addUserAndQueryToModel(user, locationName, model);
             model.addAttribute("success", "Вы уже добавили эту локацию. Выберите другую.");
             model.addAttribute("locationCard", null);
             return "search-page";
         }
 
-        Location location = new Location(locationName, user, lat, lon);
-        locationDao.save(location);
-
-        user.getLocations().add(location);
-
         return "redirect:/";
     }
 
     private boolean isLocationValid(String locationName) {
-        // Разрешаем только буквы (без цифр и символов)
         return locationName.matches("^[a-zA-Zа-яА-ЯёЁ\\s]+$");
     }
 
-    private void addUserAndQueryToModel (User user, String locationName, Model model) {
+    private void addUserAndQueryToModel(User user, String locationName, Model model) {
         model.addAttribute("login", user.getLogin());
         model.addAttribute("searchQuery", locationName);
     }
