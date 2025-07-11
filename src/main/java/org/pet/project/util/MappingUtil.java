@@ -55,7 +55,9 @@ public class MappingUtil {
     }
 
     public static String convertCountryCodeToString(String countryCode) {
-
+        if (countryCode == null || countryCode.isBlank()) {
+            return "Unknown country";
+        }
         Locale locale = new Locale("", countryCode);
         return locale.getDisplayCountry(Locale.ENGLISH);
     }
