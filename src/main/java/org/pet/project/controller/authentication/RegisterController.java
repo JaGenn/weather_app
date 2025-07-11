@@ -1,14 +1,13 @@
 package org.pet.project.controller.authentication;
 
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.UserDao;
-import org.pet.project.exception.UserExistsException;
 import org.pet.project.model.dto.authentication.RegistrationFormDto;
-import org.pet.project.model.entity.User;
 import org.pet.project.service.UserSessionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Optional;
 
 
 @Slf4j
@@ -53,7 +50,7 @@ public class RegisterController {
 
         try {
             userSessionService.registerUser(form, resp);
-        } catch (UserExistsException e) {
+        } catch (EntityExistsException e) {
             model.addAttribute("error", "Такой пользователь уже зарегистрирован.");
             return "sign-up";
         }
