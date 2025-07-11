@@ -19,7 +19,7 @@
 
 ## ⚙️ Конфигурация
 ```
-# Database config in application.properties
+# Database config
 db.driverClassName=org.postgresql.Driver
 db.url=jdbc:postgresql://localhost:5432/your_db_name
 db.username=your_db_username
