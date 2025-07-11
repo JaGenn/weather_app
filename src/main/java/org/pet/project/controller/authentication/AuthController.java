@@ -2,6 +2,7 @@ package org.pet.project.controller.authentication;
 
 
 import com.password4j.Password;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,9 +61,12 @@ public class AuthController {
     }
 
     @PostMapping("/sign-out")
-    public String signOut(Model model) {
-        model.addAttribute("isAuthenticated", false);
-        return "main-page";
+    public String signOut(HttpServletResponse response) {
+
+        Cookie cookie = new Cookie("sessionId", "");
+        response.addCookie(cookie);
+
+        return "redirect:/";
     }
 
 }
