@@ -2,11 +2,10 @@ package org.pet.project.controller.authentication;
 
 import com.password4j.Hash;
 import com.password4j.Password;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.UserDao;
 import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.User;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PasswordRecoverController {
 
-    private final UserDAO userDAO;
+    private final UserDao userDao;
 
     @GetMapping("/forgot-password")
     public String registrationForm(Model model) {
@@ -35,7 +34,7 @@ public class PasswordRecoverController {
     }
 
     @PostMapping("/forgot-password")
-    public String signUp(@Valid @ModelAttribute("registrationForm") RegistrationFormDto form,
+    public String recoverPassword(@Valid @ModelAttribute("registrationForm") RegistrationFormDto form,
                          BindingResult result, Model model,
                          RedirectAttributes redirectAttributes) {
 
@@ -49,7 +48,7 @@ public class PasswordRecoverController {
             return "sign-up";
         }
 
-        Optional<User> optionalUser = userDAO.fingByLogin(form.getLogin());
+        Optional<User> optionalUser = userDao.fingByLogin(form.getLogin());
 
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Такой пользователь не зарегистрирован");
@@ -67,11 +66,11 @@ public class PasswordRecoverController {
         user.setPassword(password.getResult());
 
         log.info("Saving new password to user " + user.getLogin());
-        userDAO.updateUser(user);
+        userDao.update(user);
 
 
         log.info("Password recover is successful: redirecting to the auth page");
-        redirectAttributes.addFlashAttribute("success", "Ваш пароль был успешно обновлен");
+        redirectAttributes.addFlashAttribute("success", "Ваш пароль был успешно обновлен.");
         return "redirect:/sign-in";
     }
 

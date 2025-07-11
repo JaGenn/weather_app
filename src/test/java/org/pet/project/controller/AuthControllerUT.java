@@ -5,16 +5,20 @@ import com.password4j.Hash;
 import com.password4j.Password;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pet.project.dao.SessionDAO;
-import org.pet.project.dao.UserDAO;
-import org.pet.project.model.dto.AuthFormDto;
+import org.pet.project.controller.authentication.AuthController;
+import org.pet.project.dao.SessionDao;
+import org.pet.project.dao.UserDao;
+import org.pet.project.model.dto.authentication.AuthFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
+import org.pet.project.service.UserSessionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
@@ -27,10 +31,10 @@ import static org.mockito.Mockito.*;
 class AuthControllerUT {
 
     @Mock
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     @Mock
-    private SessionDAO sessionDAO;
+    private SessionDao sessionDAO;
 
     @Mock
     private BindingResult bindingResult;
@@ -41,13 +45,15 @@ class AuthControllerUT {
     @Mock
     private HttpServletResponse resp;
 
+    @Mock
+    private UserSessionService userSessionService;
+
     @InjectMocks
     private AuthController controller;
 
 
     @Test
     void notValidData() {
-        AuthFormDto formDto = new AuthFormDto("123", "123");
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
@@ -96,8 +102,8 @@ class AuthControllerUT {
 
         String controllerAnswer = controller.signIn(formDto, bindingResult, model, resp);
 
+        verify(userSessionService).authUser(user, resp);
+
         assertEquals("redirect:/", controllerAnswer);
-        verify(sessionDAO).save(any(Session.class));
-        verify(resp).addCookie(any(Cookie.class));
     }
 }

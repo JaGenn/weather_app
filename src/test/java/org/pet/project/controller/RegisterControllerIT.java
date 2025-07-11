@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.pet.project.config.DataBaseConfig;
-import org.pet.project.dao.UserDAO;
+import org.pet.project.dao.UserDao;
 import org.pet.project.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,7 +32,7 @@ public class RegisterControllerIT {
     private WebApplicationContext context;
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDao userDAO;
 
     private MockMvc mockMvc;
 

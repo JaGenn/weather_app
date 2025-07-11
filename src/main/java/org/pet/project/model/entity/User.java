@@ -1,9 +1,7 @@
 package org.pet.project.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,23 +11,22 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     @Column(name = "login", nullable = false, unique = true)
     private String login;
 
+    @NonNull
     @Column(name = "password", nullable = false)
     private String password;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Location> locations;
 
-    public User(String login, String password) {
-        this.login = login;
-        this.password = password;
-    }
 }

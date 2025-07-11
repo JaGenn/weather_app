@@ -2,9 +2,7 @@ package org.pet.project.model.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,30 +11,28 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NonNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @NonNull
     @Column(name = "latitude", nullable = false)
     private BigDecimal latitude;
 
+    @NonNull
     @Column(name = "longitude", nullable = false)
     private BigDecimal longitude;
 
-
-    public Location(String name, User user, BigDecimal latitude, BigDecimal longitude) {
-        this.name = name;
-        this.user = user;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
 }
