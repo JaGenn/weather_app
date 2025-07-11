@@ -13,5 +13,11 @@
 - JUnit 5
 - Maven
 
-# ⚙️ Сборка и запуск
-``` ааа
+# ⚙️ Конфигурация
+```
+# Database config in application.properties
+db.driverClassName=org.postgresql.Driver
+db.url=jdbc:postgresql://localhost:5432/your_db_name
+db.username=your_db_username
+db.password=your_db_password
+```
