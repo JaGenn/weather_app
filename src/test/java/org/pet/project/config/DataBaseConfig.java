@@ -2,17 +2,11 @@ package org.pet.project.config;
 
 
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 import javax.sql.DataSource;
@@ -20,7 +14,7 @@ import java.util.Properties;
 
 
 @Configuration
-@EnableWebMvc
+@EnableTransactionManagement
 @ComponentScan(basePackages = "org.pet.project")
 public class DataBaseConfig {
 

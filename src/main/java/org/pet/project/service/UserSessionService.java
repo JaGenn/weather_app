@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.SessionDao;
 import org.pet.project.dao.UserDao;
-import org.pet.project.exception.UniqueConstraintViolationException;
-import org.pet.project.exception.UserExistsException;
 import org.pet.project.model.dto.authentication.RegistrationFormDto;
 import org.pet.project.model.entity.Session;
 import org.pet.project.model.entity.User;
@@ -34,11 +32,7 @@ public class UserSessionService {
         log.info("Saving new user to the database");
         User user = new User(form.getLogin(), password.getResult());
 
-        try {
-            userDao.save(user);
-        } catch (UniqueConstraintViolationException e) {
-            throw new UserExistsException(e.getMessage());
-        }
+        userDao.save(user);
 
         log.info("Creating new session");
         Session session = new Session(user, LocalDateTime.now().plusHours(24));

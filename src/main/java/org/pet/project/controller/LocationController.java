@@ -1,12 +1,12 @@
 package org.pet.project.controller;
 
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.pet.project.dao.LocationDao;
 import org.pet.project.exception.CookieNotFoundException;
-import org.pet.project.exception.UniqueConstraintViolationException;
 import org.pet.project.model.dto.api.LocationSearchCardDto;
 import org.pet.project.model.entity.Location;
 import org.pet.project.model.entity.User;
@@ -73,7 +73,7 @@ public class LocationController {
 
         try {
             locationDao.save(location);
-        } catch (UniqueConstraintViolationException e) {
+        } catch (EntityExistsException e) {
             addUserAndQueryToModel(user, locationName, model);
             model.addAttribute("success", "Вы уже добавили эту локацию. Выберите другую.");
             model.addAttribute("locationCard", null);
