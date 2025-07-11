@@ -3,7 +3,7 @@
 
 <img width="1920" height="978" alt="image" src="https://github.com/user-attachments/assets/d0e681bd-d389-4a3c-877a-909401c209be" />
 
-# 🚀 Технологии
+## 🚀 Технологии
 - Spring MVC
 - Spring Test
 - Thymeleaf
@@ -13,7 +13,7 @@
 - JUnit 5
 - Maven
 
-# ⚙️ Конфигурация
+## ⚙️ Конфигурация
 ```
 # Database config in application.properties
 db.driverClassName=org.postgresql.Driver
