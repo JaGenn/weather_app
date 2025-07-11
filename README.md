@@ -7,9 +7,11 @@
 - Spring MVC
 - Spring Test
 - Thymeleaf
-• PostgreSQL
-• Flyway
-• Tomcat 11
-• JUnit 5
-• Maven
+- PostgreSQL
+- Flyway
+- Tomcat 11
+- JUnit 5
+- Maven
 
+# ⚙️ Сборка и запуск
+``` ааа
