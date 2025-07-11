@@ -4,12 +4,12 @@
 <img width="1920" height="978" alt="image" src="https://github.com/user-attachments/assets/d0e681bd-d389-4a3c-877a-909401c209be" />
 
 # 🚀 Технологии
-Spring MVC
-Spring Test
-Thymeleaf
-PostgreSQL
-Flyway
-Tomcat 11
-JUnit 5
-Maven
+• Spring MVC
+• Spring Test
+• Thymeleaf
+• PostgreSQL
+• Flyway
+• Tomcat 11
+• JUnit 5
+• Maven
 
