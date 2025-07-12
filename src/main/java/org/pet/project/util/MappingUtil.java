@@ -14,11 +14,11 @@ public class MappingUtil {
 
     public static LocationSearchCardDto convertToLocationDto(WeatherApiResponse apiResponse) {
 
-        String uncoddedCountryName = convertCountryCodeToString(apiResponse.getSys().getCountry());
+        String encodedCountryName = convertCountryCodeToString(apiResponse.getSys().getCountry());
 
         return new LocationSearchCardDto(
                 apiResponse.getName(),
-                uncoddedCountryName,
+                encodedCountryName,
                 apiResponse.getCoordinates()
         );
     }
@@ -26,19 +26,19 @@ public class MappingUtil {
 
     public static UserWeatherCardDto convertToWeatherDto(WeatherApiResponse apiResponse) {
 
-        String uncoddedCountryName = convertCountryCodeToString(apiResponse.getSys().getCountry());
-        String uncoddedSunrise = convertUnixToTime(apiResponse.getSys().getSunrise(), apiResponse.getTimezone());
-        String uncoddedSunset = convertUnixToTime(apiResponse.getSys().getSunset(), apiResponse.getTimezone());
+        String encodedCountryName = convertCountryCodeToString(apiResponse.getSys().getCountry());
+        String encodedSunrise = convertUnixToTime(apiResponse.getSys().getSunrise(), apiResponse.getTimezone());
+        String encodedSunset = convertUnixToTime(apiResponse.getSys().getSunset(), apiResponse.getTimezone());
 
         return new UserWeatherCardDto(
                 apiResponse.getName(),
-                uncoddedCountryName,
+                encodedCountryName,
                 apiResponse.getWeather().getFirst().getIcon(),
                 apiResponse.getMain().getTemp(),
                 apiResponse.getMain().getFeelsLike(),
                 apiResponse.getMain().getHumidity(),
-                uncoddedSunrise,
-                uncoddedSunset
+                encodedSunrise,
+                encodedSunset
         );
     }
 
