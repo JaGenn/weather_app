@@ -80,7 +80,7 @@ class AuthControllerUT {
         AuthFormDto formDto = new AuthFormDto("login", "password");
         User user = new User("login", "password");
 
-        when(userDAO.fingByLogin(user.getLogin())).thenReturn(Optional.empty());
+        when(userDAO.findByLogin(user.getLogin())).thenReturn(Optional.empty());
         when(bindingResult.hasErrors()).thenReturn(false);
 
         String controllerAnswer = controller.signIn(formDto, bindingResult, model, resp);
@@ -98,7 +98,7 @@ class AuthControllerUT {
         User user = new User("user", hash.getResult());
 
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(userDAO.fingByLogin(formDto.getLogin())).thenReturn(Optional.of(user));
+        when(userDAO.findByLogin(formDto.getLogin())).thenReturn(Optional.of(user));
 
         String controllerAnswer = controller.signIn(formDto, bindingResult, model, resp);
 

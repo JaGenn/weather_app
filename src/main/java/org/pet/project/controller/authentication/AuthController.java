@@ -47,7 +47,7 @@ public class AuthController {
             return "sign-in";
         }
 
-        Optional<User> optionalUser = userDao.fingByLogin(form.getLogin());
+        Optional<User> optionalUser = userDao.findByLogin(form.getLogin());
 
         if (optionalUser.isEmpty() || !Password.check(form.getPassword(), optionalUser.get().getPassword()).withBcrypt()) {
             model.addAttribute("error", "Неверный логин или пароль");

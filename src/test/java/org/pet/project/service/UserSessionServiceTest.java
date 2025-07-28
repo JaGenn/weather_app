@@ -50,7 +50,7 @@ class UserSessionServiceTest {
 
         userSessionService.registerUser(formDto, resp);
 
-        Optional<User> user = userDao.fingByLogin(formDto.getLogin());
+        Optional<User> user = userDao.findByLogin(formDto.getLogin());
         assertTrue(user.isPresent());
         assertEquals("login", user.get().getLogin());
 

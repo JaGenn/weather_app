@@ -41,7 +41,7 @@ public class AuthControllerIT {
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 
-        Optional<User> optionalUser = userDAO.fingByLogin("tester");
+        Optional<User> optionalUser = userDAO.findByLogin("tester");
 
         if (optionalUser.isEmpty()) {
 

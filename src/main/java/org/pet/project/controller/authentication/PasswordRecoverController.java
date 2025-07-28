@@ -48,7 +48,7 @@ public class PasswordRecoverController {
             return "sign-up";
         }
 
-        Optional<User> optionalUser = userDao.fingByLogin(form.getLogin());
+        Optional<User> optionalUser = userDao.findByLogin(form.getLogin());
 
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Такой пользователь не зарегистрирован");

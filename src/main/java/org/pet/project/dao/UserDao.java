@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UserDao extends CrudDao<User> {
 
 
-    public Optional<User> fingByLogin(String login) {
+    public Optional<User> findByLogin(String login) {
         String query = "FROM User WHERE login = :login";
         try  {
             return sessionFactory.getCurrentSession().createQuery(query, User.class)
