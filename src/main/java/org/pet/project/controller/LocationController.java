@@ -36,7 +36,7 @@ public class LocationController {
             model.addAttribute("error", "Пожалуйста, авторизуйтесь заново");
             return "main-page";
         }
-        if (locationName == null || locationName.isBlank() || !isLocationValid(locationName)) {
+        if (!locationNameIsValid(locationName)) {
             addUserAndQueryToModel(user, locationName, model);
             model.addAttribute("error", "Название локации не может содержать цифры, символы или быть пустым");
             return "search-page";
@@ -83,8 +83,10 @@ public class LocationController {
         return "redirect:/";
     }
 
-    private boolean isLocationValid(String locationName) {
-        return locationName.matches("^[a-zA-Zа-яА-ЯёЁ\\s]+$");
+    private boolean locationNameIsValid(String locationName) {
+        return locationName != null
+                && !locationName.isBlank()
+                && locationName.matches("^[a-zA-Zа-яА-ЯёЁ\\s]+$");
     }
 
     private void addUserAndQueryToModel(User user, String locationName, Model model) {
