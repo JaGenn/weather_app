@@ -59,15 +59,15 @@ public class LocationController {
     public String trackLocation(@ModelAttribute("locationCard") LocationSearchCardDto cardDto,
                                 HttpServletRequest req, Model model) {
 
-        String locationName = cardDto.getName();
-        BigDecimal lat = cardDto.getCoordinates().getLat();
-        BigDecimal lon = cardDto.getCoordinates().getLon();
-
         User user = (User) req.getAttribute("user");
 
         if (user == null) {
             throw new CookieNotFoundException("User, which requests location, is not found");
         }
+
+        String locationName = cardDto.getName();
+        BigDecimal lat = cardDto.getCoordinates().getLat();
+        BigDecimal lon = cardDto.getCoordinates().getLon();
 
         Location location = new Location(locationName, user, lat, lon);
 
